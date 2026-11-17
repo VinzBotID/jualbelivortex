@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toko FF – Akun & File Free Fire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1 class="logo">Toko FF</h1>
+    <p class="tag">Akun dan file Free Fire pilihan. Pilih kategori, lalu chat langsung untuk beli.</p>
+  </header>
+  <div class="tabs">
+    <button id="t-akun" class="on">🎮 Akun FF</button>
+    <button id="t-file">📁 File FF</button>
+  </div>
+  <main id="list"></main>
+  <p class="foot">© Toko FF</p>
+</div>
+<script src="data.js"></script>
+<script>
+let D=window.TOKO_DATA||{wa:'',akun:[],file:[],updated:0};
+try{const l=JSON.parse(localStorage.getItem('toko_ff_data'));if(l&&l.updated>(D.updated||0))D=l}catch(e){}
+let tab='akun';const $=i=>document.getElementById(i);
+const rp=n=>'Rp '+Number(n||0).toLocaleString('id-ID');
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function wa(m){return 'https://wa.me/'+String(D.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(m)}
+function url(u){return /^https?:\/\//i.test(u)?u:'https://'+u}
+function buy(m){const a=el('a','btn','Beli via WhatsApp');a.href=wa(m);a.target='_blank';a.rel='noopener';return a}
+function akun(a){
+  const c=el('article','card'),m=el('img','main');m.alt=a.nama;m.src=(a.fotos&&a.fotos[0])||'';c.append(m);
+  if(a.fotos&&a.fotos.length>1){const t=el('div','th');a.fotos.forEach((f,i)=>{const x=el('img',i?'':'on');x.src=f;x.alt='';x.onclick=()=>{m.src=f;[...t.children].forEach(y=>y.classList.remove('on'));x.classList.add('on')};t.append(x)});c.append(t)}
+  const b=el('div','cb');b.append(el('h3',0,a.nama));
+  const sp=(a.spek||'').split('\n').filter(s=>s.trim());
+  if(sp.length){const u=el('ul','spec');sp.forEach(s=>u.append(el('li',0,s)));b.append(u)}
+  if(a.desk)b.append(el('p','desc',a.desk));
+  b.append(el('div','price',rp(a.harga)),buy('Halo, saya mau beli akun FF: '+a.nama+' ('+rp(a.harga)+')'));
+  c.append(b);return c}
+function file(f){
+  const c=el('article','card'),b=el('div','cb');b.append(el('h3',0,'📁 '+f.nama));
+  if(f.desk)b.append(el('p','desc',f.desk));
+  if(f.video){const v=el('a','btn ghost','▶ Tonton video preview');v.href=url(f.video);v.target='_blank';v.rel='noopener';b.append(v)}
+  b.append(el('div','price',rp(f.harga)),buy('Halo, saya mau beli file FF: '+f.nama+' ('+rp(f.harga)+')'));
+  c.append(b);return c}
+function render(){
+  $('t-akun').classList.toggle('on',tab==='akun');$('t-file').classList.toggle('on',tab==='file');
+  const L=$('list');L.textContent='';
+  if(!D[tab].length){L.append(el('div','empty','Belum ada '+(tab==='akun'?'akun':'file')+' yang dijual. Cek lagi nanti.'));return}
+  const g=el('div','grid');D[tab].forEach(i=>g.append(tab==='akun'?akun(i):file(i)));L.append(g)}
+$('t-akun').onclick=()=>{tab='akun';render()};$('t-file').onclick=()=>{tab='file';render()};
+render();
+</script>
+</body>
+</html>
