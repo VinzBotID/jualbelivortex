@@ -126,3 +126,6 @@ input,textarea{background:rgba(8,8,26,.7);border:1.5px solid #3f3280}
 
 /* Foto akun persegi 1:1 */
 .main{aspect-ratio:1/1}
+
+/* Foto akun mengikuti ukuran 1280 x 1035 */
+.main{aspect-ratio:1280/1035}
