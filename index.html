@@ -9,18 +9,61 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="orbs"><i></i><i></i><i></i></div>
+<header class="nav"><b>Toko FF</b>
+  <nav><a href="#katalog">Katalog</a><a href="#cara">Cara Beli</a><a href="#faq">FAQ</a><a class="cta" id="navWa" href="#" target="_blank" rel="noopener">Chat</a></nav>
+</header>
 <div class="wrap">
-  <header class="hero">
+  <section class="hero">
+    <span class="badge">✨ Akun &amp; file Free Fire pilihan</span>
     <h1 class="logo">Toko FF</h1>
-    <p class="tag">Akun dan file Free Fire pilihan. Pilih kategori, lalu chat langsung untuk beli.</p>
-  </header>
+    <span class="swap" id="swap"></span>
+    <p class="tag">Pilih kategori, lihat detailnya, lalu chat langsung untuk beli.</p>
+    <div class="heroBtns"><a class="btn" href="#katalog">Lihat katalog</a><a class="btn ghost" id="heroWa" href="#" target="_blank" rel="noopener">Tanya dulu via WhatsApp</a></div>
+  </section>
+  <div class="stats">
+    <div class="stat"><b id="sA">0</b><span>Akun tersedia</span></div>
+    <div class="stat"><b id="sF">0</b><span>File tersedia</span></div>
+    <div class="stat"><b>24/7</b><span>Chat WhatsApp</span></div>
+  </div>
+  <div class="marq"><div id="mq"></div></div>
+
+  <h2 class="sec" id="katalog">Katalog</h2>
   <div class="tabs">
     <button id="t-akun" class="on">🎮 Akun FF</button>
     <button id="t-file">📁 File FF</button>
   </div>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Cari nama atau deskripsi…" aria-label="Cari produk">
+    <select id="sort" aria-label="Urutkan"><option value="new">Terbaru</option><option value="low">Harga terendah</option><option value="high">Harga tertinggi</option></select>
+  </div>
   <main id="list"></main>
+
+  <h2 class="sec">Kenapa beli di sini</h2>
+  <div class="feat">
+    <div><em>🛡️</em><h4>Detail jelas</h4><p>Foto, spek, dan deskripsi ditampilkan lengkap sebelum kamu beli.</p></div>
+    <div><em>⚡</em><h4>Proses cepat</h4><p>Cukup satu klik, chat langsung ke penjual lewat WhatsApp.</p></div>
+    <div><em>💬</em><h4>Bisa tanya dulu</h4><p>Ada yang kurang jelas? Tanyakan sebelum memutuskan.</p></div>
+    <div><em>🎬</em><h4>Preview video</h4><p>Setiap file bisa dilihat dulu lewat video preview.</p></div>
+  </div>
+
+  <h2 class="sec" id="cara">Cara beli</h2>
+  <ol class="steps">
+    <li><b>Pilih produk</b>Buka katalog dan pilih akun atau file yang kamu mau.</li>
+    <li><b>Klik beli</b>Tombol Beli via WhatsApp membuka chat dengan pesan siap kirim.</li>
+    <li><b>Sepakati pembayaran</b>Konfirmasi harga dan metode bayar langsung dengan penjual.</li>
+    <li><b>Terima produk</b>Setelah pembayaran dikonfirmasi, produk dikirim kepadamu.</li>
+  </ol>
+
+  <h2 class="sec" id="faq">Pertanyaan umum</h2>
+  <details><summary>Bagaimana cara membayar?</summary><p>Pembayaran dibicarakan langsung lewat WhatsApp setelah kamu memilih produk.</p></details>
+  <details><summary>Apakah bisa tanya dulu sebelum beli?</summary><p>Bisa. Klik tombol chat kapan saja dan tanyakan detail produknya.</p></details>
+  <details><summary>Produk yang sudah laku masih tampil?</summary><p>Produk yang sudah terjual akan dihapus dari katalog. Cek lagi secara berkala untuk stok baru.</p></details>
+
+  <div class="cta-box"><h3>Belum nemu yang cocok?</h3><div>Chat saja, kami bantu carikan.</div><a class="btn" id="ctaWa" href="#" target="_blank" rel="noopener">Chat sekarang</a></div>
   <p class="foot">© Toko FF</p>
 </div>
+<a class="fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Chat WhatsApp">💬</a>
 <script src="data.js"></script>
 <script>
 let D=window.TOKO_DATA||{wa:'',akun:[],file:[],updated:0};
@@ -28,11 +71,12 @@ try{const l=JSON.parse(localStorage.getItem('toko_ff_data'));if(l&&l.updated>(D.
 let tab='akun';const $=i=>document.getElementById(i);
 const rp=n=>'Rp '+Number(n||0).toLocaleString('id-ID');
 function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-function wa(m){return 'https://wa.me/'+String(D.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(m)}
+function wa(m){return 'https://wa.me/'+String(D.wa||'').replace(/\D/g,'')+(m?'?text='+encodeURIComponent(m):'')}
 function url(u){return /^https?:\/\//i.test(u)?u:'https://'+u}
 function buy(m){const a=el('a','btn','Beli via WhatsApp');a.href=wa(m);a.target='_blank';a.rel='noopener';return a}
-function akun(a){
-  const c=el('article','card'),m=el('img','main');m.alt=a.nama;m.src=(a.fotos&&a.fotos[0])||'';c.append(m);
+function akun(a,isNew){
+  const c=el('article','card');if(isNew)c.append(el('span','ribbon','Terbaru'));
+  const m=el('img','main');m.alt=a.nama;m.src=(a.fotos&&a.fotos[0])||'';c.append(m);
   if(a.fotos&&a.fotos.length>1){const t=el('div','th');a.fotos.forEach((f,i)=>{const x=el('img',i?'':'on');x.src=f;x.alt='';x.onclick=()=>{m.src=f;[...t.children].forEach(y=>y.classList.remove('on'));x.classList.add('on')};t.append(x)});c.append(t)}
   const b=el('div','cb');b.append(el('h3',0,a.nama));
   const sp=(a.spek||'').split('\n').filter(s=>s.trim());
@@ -40,18 +84,30 @@ function akun(a){
   if(a.desk)b.append(el('p','desc',a.desk));
   b.append(el('div','price',rp(a.harga)),buy('Halo, saya mau beli akun FF: '+a.nama+' ('+rp(a.harga)+')'));
   c.append(b);return c}
-function file(f){
-  const c=el('article','card'),b=el('div','cb');b.append(el('h3',0,'📁 '+f.nama));
+function file(f,isNew){
+  const c=el('article','card');if(isNew)c.append(el('span','ribbon','Terbaru'));
+  const b=el('div','cb');b.style.paddingTop='44px';b.append(el('h3',0,'📁 '+f.nama));
   if(f.desk)b.append(el('p','desc',f.desk));
   if(f.video){const v=el('a','btn ghost','▶ Tonton video preview');v.href=url(f.video);v.target='_blank';v.rel='noopener';b.append(v)}
   b.append(el('div','price',rp(f.harga)),buy('Halo, saya mau beli file FF: '+f.nama+' ('+rp(f.harga)+')'));
   c.append(b);return c}
 function render(){
   $('t-akun').classList.toggle('on',tab==='akun');$('t-file').classList.toggle('on',tab==='file');
+  const q=$('q').value.toLowerCase().trim(),s=$('sort').value;
+  let items=D[tab].map((x,i)=>({x,isNew:i<2&&s==='new'&&!q})).filter(o=>(o.x.nama+' '+(o.x.desk||'')+' '+(o.x.spek||'')).toLowerCase().includes(q));
+  if(s==='low')items.sort((a,b)=>a.x.harga-b.x.harga);if(s==='high')items.sort((a,b)=>b.x.harga-a.x.harga);
   const L=$('list');L.textContent='';
-  if(!D[tab].length){L.append(el('div','empty','Belum ada '+(tab==='akun'?'akun':'file')+' yang dijual. Cek lagi nanti.'));return}
-  const g=el('div','grid');D[tab].forEach(i=>g.append(tab==='akun'?akun(i):file(i)));L.append(g)}
+  if(!items.length){L.append(el('div','empty',q?'Tidak ada hasil untuk "'+$('q').value+'".':'Belum ada '+(tab==='akun'?'akun':'file')+' yang dijual. Cek lagi nanti.'));return}
+  const g=el('div','grid');items.forEach(o=>g.append(tab==='akun'?akun(o.x,o.isNew):file(o.x,o.isNew)));L.append(g)}
 $('t-akun').onclick=()=>{tab='akun';render()};$('t-file').onclick=()=>{tab='file';render()};
+$('q').oninput=render;$('sort').onchange=render;
+['navWa','heroWa','ctaWa','fab'].forEach(i=>{$(i).href=wa('Halo, saya mau tanya produk di Toko FF')});
+$('sA').textContent=D.akun.length;$('sF').textContent=D.file.length;
+const mt=['🔥 Akun FF pilihan','📁 File FF lengkap','💬 Chat langsung via WhatsApp','🎬 Ada video preview','✨ Harga jelas','🎮 Update berkala'];
+const mq=$('mq');for(let k=0;k<2;k++)mt.concat(mt).forEach(t=>mq.append(el('span',0,t)));
+const ph=['Akun sultan siap pakai','File FF dengan video preview','Beli cepat lewat WhatsApp','Katalog diperbarui berkala'];let pi=0;const sw=$('swap');
+function tick(){sw.classList.add('out');setTimeout(()=>{sw.textContent=ph[pi++%ph.length];sw.classList.remove('out')},350)}
+tick();setInterval(tick,2800);
 render();
 </script>
 </body>
