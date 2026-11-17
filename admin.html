@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin – Toko FF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <h1 class="logo" style="font-size:34px;margin:24px 0">Admin Toko FF</h1>
+  <div id="login" class="panel" hidden>
+    <h2>Masuk</h2>
+    <label for="pw">Password admin</label>
+    <input id="pw" type="password" autocomplete="current-password">
+    <button class="btn" style="margin-top:14px;width:100%" id="go">Masuk</button>
+  </div>
+  <div id="app" hidden>
+    <p class="note">Perubahan tersimpan di browser ini dan langsung terlihat di <b>index.html</b> pada browser yang sama. Supaya pembeli ikut melihatnya: klik <b>Unduh data.js</b>, lalu timpa file <b>data.js</b> di hosting kamu.</p>
+    <div class="tabs"><button id="t-akun" class="on">🎮 Akun FF</button><button id="t-file">📁 File FF</button></div>
+    <section class="panel" id="form"></section>
+    <section class="panel">
+      <h2>Pengaturan</h2>
+      <label for="wa">Nomor WhatsApp (format 628xxxxxxxx)</label>
+      <input id="wa" inputmode="numeric">
+      <div class="row"><button class="btn ghost" id="sw">Simpan nomor</button><button class="btn" id="dl">⬇ Unduh data.js</button></div>
+    </section>
+    <h2 style="font-family:var(--hd)">Daftar tersimpan</h2>
+    <div id="list"></div>
+  </div>
+</div>
+<script src="data.js"></script>
+<script>
+const PASSWORD='admin123'; // GANTI password ini sebelum upload!
+let D=window.TOKO_DATA||{updated:0,wa:'',akun:[],file:[]};
+try{const l=JSON.parse(localStorage.getItem('toko_ff_data'));if(l&&l.updated>(D.updated||0))D=l}catch(e){}
+let tab='akun',imgs=[];const $=i=>document.getElementById(i);
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+const rp=n=>'Rp '+Number(n||0).toLocaleString('id-ID');
+function save(){D.updated=Date.now();try{localStorage.setItem('toko_ff_data',JSON.stringify(D))}catch(e){alert('Penyimpanan browser penuh. Kurangi jumlah/ukuran foto, atau hapus item lama.');return}draw()}
+function unlock(){$('login').hidden=true;$('app').hidden=false;$('wa').value=D.wa||'';draw()}
+if(sessionStorage.getItem('adm')==='1')unlock();else $('login').hidden=false;
+$('go').onclick=()=>{if($('pw').value===PASSWORD){sessionStorage.setItem('adm','1');unlock()}else alert('Password salah.')};
+$('pw').onkeydown=e=>{if(e.key==='Enter')$('go').click()};
+function field(p,label,tag,id,ph,type){const l=el('label',0,label);l.htmlFor=id;const i=document.createElement(tag);i.id=id;if(ph)i.placeholder=ph;if(type)i.type=type;if(tag==='textarea')i.rows=3;p.append(l,i);return i}
+function shrink(f){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,800/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.72))};i.src=URL.createObjectURL(f)})}
+function form(){
+  const F=$('form');F.textContent='';F.append(el('h2',0,'Tambah '+(tab==='akun'?'akun FF':'file FF')));
+  if(tab==='akun'){
+    field(F,'Nama akun','input','f-nama','Contoh: Akun Sultan Lv 70');
+    const l=el('label',0,'Foto akun (boleh pilih banyak)');l.htmlFor='f-foto';const fi=el('input');fi.id='f-foto';fi.type='file';fi.accept='image/*';fi.multiple=true;
+    const pv=el('div','pv');
+    fi.onchange=async()=>{for(const f of fi.files)imgs.push(await shrink(f));pv.textContent='';imgs.forEach(s=>{const i=el('img');i.src=s;i.alt='';pv.append(i)});fi.value=''};
+    F.append(l,fi,pv);
+    field(F,'Spesifikasi (satu baris satu poin)','textarea','f-spek','Level 70\nBundle 12\nElite Pass S5');
+    field(F,'Deskripsi','textarea','f-desk');
+  }else{
+    field(F,'Nama file','input','f-nama','Contoh: Config Headshot v2');
+    field(F,'Link video','input','f-video','https://youtube.com/...');
+    field(F,'Deskripsi','textarea','f-desk');
+  }
+  field(F,'Harga (angka saja)','input','f-harga','50000','number');
+  const b=el('button','btn','＋ Tambah');b.style.cssText='margin-top:16px;width:100%';b.onclick=add;F.append(b)}
+function add(){
+  const nama=$('f-nama').value.trim(),h=$('f-harga').value;
+  if(!nama||!h){alert('Nama dan harga wajib diisi.');return}
+  const o={id:Date.now(),nama,harga:+h,desk:$('f-desk').value.trim()};
+  if(tab==='akun'){o.fotos=imgs;o.spek=$('f-spek').value;imgs=[]}else o.video=$('f-video').value.trim();
+  D[tab].unshift(o);save();form()}
+function draw(){
+  $('t-akun').classList.toggle('on',tab==='akun');$('t-file').classList.toggle('on',tab==='file');
+  const L=$('list');L.textContent='';
+  if(!D[tab].length){L.append(el('div','empty','Belum ada item. Tambahkan lewat form di atas.'));return}
+  const g=el('div','grid');
+  D[tab].forEach(i=>{const c=el('article','card');
+    if(i.fotos&&i.fotos[0]){const m=el('img','main');m.src=i.fotos[0];m.alt='';c.append(m)}
+    const b=el('div','cb');b.append(el('h3',0,i.nama),el('div','price',rp(i.harga)));
+    const d=el('button','btn del','Hapus');d.onclick=()=>{if(confirm('Hapus "'+i.nama+'"?')){D[tab]=D[tab].filter(x=>x.id!==i.id);save()}};
+    b.append(d);c.append(b);g.append(c)});
+  L.append(g)}
+$('t-akun').onclick=()=>{tab='akun';form();draw()};$('t-file').onclick=()=>{tab='file';form();draw()};
+$('sw').onclick=()=>{D.wa=$('wa').value.trim();save();alert('Nomor tersimpan.')};
+$('dl').onclick=()=>{const t='window.TOKO_DATA = '+JSON.stringify(D).replace(/</g,'\\u003c')+';\n';const a=el('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/javascript'}));a.download='data.js';a.click()};
+form();
+</script>
+</body>
+</html>
