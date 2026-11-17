@@ -120,3 +120,9 @@ body{background:radial-gradient(700px 420px at 10% -5%,rgba(88,60,190,.28),trans
 .steps li::before{background:var(--grad)}
 input,textarea{background:rgba(8,8,26,.7);border:1.5px solid #3f3280}
 .btn.del{background:rgba(160,40,70,.18)}
+
+/* Foto akun tampil utuh (tidak terpotong) */
+.main{object-fit:contain;background:#0e0b26}
+
+/* Foto akun persegi 1:1 */
+.main{aspect-ratio:1/1}
