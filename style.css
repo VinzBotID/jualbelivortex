@@ -94,3 +94,29 @@ details p{margin:10px 0 0;color:var(--mu);font-size:14px}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%{box-shadow:0 0 0 18px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
 @media(max-width:560px){.nav nav a:not(.cta){display:none}}
 @media(prefers-reduced-motion:reduce){.orbs i,.marq div,.fab{animation:none}}
+
+/* ===== Tema gelap navy-ungu (mengikuti referensi) ===== */
+:root{--bg:#090919;--bg2:#0d0d24;--card:rgba(24,22,56,.72);--bd:#3f3280;--tx:#f5f3ff;--mu:#b4b0d4;--grad:linear-gradient(135deg,#b5389a,#6a40d4);--gold:#f0d28a}
+body{background:radial-gradient(700px 420px at 10% -5%,rgba(88,60,190,.28),transparent 65%),radial-gradient(600px 400px at 100% 8%,rgba(160,50,130,.16),transparent 65%),linear-gradient(180deg,var(--bg2),var(--bg))}
+.orbs i{opacity:.14;filter:blur(90px)}
+.nav{background:linear-gradient(180deg,rgba(30,24,70,.92),rgba(14,13,36,.92));border-bottom:1px solid #3f3280}
+.nav b,.logo{background:linear-gradient(100deg,#ff5fa2 0%,#b57cff 55%,#7aa2ff 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent}
+.badge{background:rgba(70,50,150,.3);border-color:#4f3fa0;color:#d9ccff}
+.tabs button,.stat,.feat div,.steps li,details,.panel,.tools select{background:linear-gradient(145deg,rgba(40,30,88,.75),rgba(14,15,38,.9));border:1.5px solid #3f3280;border-radius:22px;backdrop-filter:none}
+.tabs button:hover{border-color:#7d62e0}
+.tabs button.on{background:linear-gradient(145deg,#4a2a8a,#8a2f78);border-color:#d05aa8;box-shadow:0 8px 24px -10px rgba(190,60,150,.55)}
+.card{background:linear-gradient(150deg,#241b4d 0%,#13132f 55%,#0e0f25 100%);border:1.5px solid #43358a;border-radius:26px;backdrop-filter:none;box-shadow:0 14px 34px -18px #000}
+.card:hover{border-color:#c0509f;box-shadow:0 18px 40px -18px rgba(190,60,150,.45)}
+.main{background:#1a1540}
+.spec li{background:rgba(90,62,190,.2);border:1px solid #4d3da3;color:#d7ccff}
+.btn{background:var(--grad)}
+.btn.ghost{background:rgba(70,55,150,.25);border:1px solid #4d3da3}
+.price{color:var(--gold)}
+.marq{background:rgba(60,45,140,.18);border-color:#2f2663}
+.marq div{color:#cdbfff}
+.ribbon{background:linear-gradient(135deg,#f0d28a,#d99a2b)}
+.cta-box{background:linear-gradient(135deg,#3a2278 0%,#7a2a72 100%);border:1.5px solid #6b4bc0;box-shadow:0 18px 50px -24px rgba(150,50,130,.7)}
+.cta-box .btn{background:#f5f3ff;color:#3a1f7a}
+.steps li::before{background:var(--grad)}
+input,textarea{background:rgba(8,8,26,.7);border:1.5px solid #3f3280}
+.btn.del{background:rgba(160,40,70,.18)}
