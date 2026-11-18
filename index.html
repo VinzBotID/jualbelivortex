@@ -16,7 +16,7 @@
 <div class="wrap">
   <section class="hero">
     <span class="badge">✨ Akun &amp; file Free Fire pilihan</span>
-    <h1 class="logo">Toko FF</h1>
+    <h1 class="logo">Vortex Verse</h1>
     <span class="swap" id="swap"></span>
     <p class="tag">Pilih kategori, lihat detailnya, lalu chat langsung untuk beli.</p>
     <div class="heroBtns"><a class="btn" href="#katalog">Lihat katalog</a><a class="btn ghost" id="heroWa" href="#" target="_blank" rel="noopener">Tanya dulu via WhatsApp</a></div>
@@ -30,7 +30,7 @@
 
   <h2 class="sec" id="katalog">Katalog</h2>
   <div class="tabs">
-    <button id="t-akun" class="on">🎮 Akun FF</button>
+    <button id="t-akun" class="on">🎮 Akun Game</button>
     <button id="t-file">📁 File FF</button>
   </div>
   <div class="tools">
@@ -61,7 +61,7 @@
   <details><summary>Produk yang sudah laku masih tampil?</summary><p>Produk yang sudah terjual akan dihapus dari katalog. Cek lagi secara berkala untuk stok baru.</p></details>
 
   <div class="cta-box"><h3>Belum nemu yang cocok?</h3><div>Chat saja, kami bantu carikan.</div><a class="btn" id="ctaWa" href="#" target="_blank" rel="noopener">Chat sekarang</a></div>
-  <p class="foot">© Toko FF</p>
+  <p class="foot">© Vortex Verse</p>
 </div>
 <a class="fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Chat WhatsApp">💬</a>
 <script src="data.js"></script>
@@ -82,7 +82,7 @@ function akun(a,isNew){
   const sp=(a.spek||'').split('\n').filter(s=>s.trim());
   if(sp.length){const u=el('ul','spec');sp.forEach(s=>u.append(el('li',0,s)));b.append(u)}
   if(a.desk)b.append(el('p','desc',a.desk));
-  b.append(el('div','price',rp(a.harga)),buy('Halo, saya mau beli akun FF: '+a.nama+' ('+rp(a.harga)+')'));
+  b.append(el('div','price',rp(a.harga)),buy('Halo, saya mau beli akun bang: '+a.nama+' ('+rp(a.harga)+')'));
   c.append(b);return c}
 function file(f,isNew){
   const c=el('article','card');if(isNew)c.append(el('span','ribbon','Terbaru'));
@@ -103,7 +103,7 @@ $('t-akun').onclick=()=>{tab='akun';render()};$('t-file').onclick=()=>{tab='file
 $('q').oninput=render;$('sort').onchange=render;
 ['navWa','heroWa','ctaWa','fab'].forEach(i=>{$(i).href=wa('Halo, saya mau tanya produk di Toko FF')});
 $('sA').textContent=D.akun.length;$('sF').textContent=D.file.length;
-const mt=['🔥 Akun FF pilihan','📁 File FF lengkap','💬 Chat langsung via WhatsApp','🎬 Ada video preview','✨ Harga jelas','🎮 Update berkala'];
+const mt=['🔥 Akun pilihan','📁 File FF lengkap','💬 Chat langsung via WhatsApp','🎬 Ada video preview','✨ Harga jelas','🎮 Update berkala'];
 const mq=$('mq');for(let k=0;k<2;k++)mt.concat(mt).forEach(t=>mq.append(el('span',0,t)));
 const ph=['Akun sultan siap pakai','File FF dengan video preview','Beli cepat lewat WhatsApp','Katalog diperbarui berkala'];let pi=0;const sw=$('swap');
 function tick(){sw.classList.add('out');setTimeout(()=>{sw.textContent=ph[pi++%ph.length];sw.classList.remove('out')},350)}
